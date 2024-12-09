@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #a8d8f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.todo-container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.input-container {
+  display: flex;
+  gap: 10px;
+}
+
+#task-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#add-task-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#task-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.task-item.completed span {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.task-buttons button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.task-buttons .edit-btn {
+  color: orange;
+  margin-right: 5px;
+}
+
+.task-buttons .delete-btn {
+  color: red;
+}
+
+</style>
+</head>
+<body>
+  <div class="todo-container">
+    <h1>ToDo List 📝</h1>
+    <div class="input-container">
+      <input type="text" id="task-input" placeholder="Add your task">
+      <button id="add-task-btn">+</button>
+    </div>
+    <ul id="task-list"></ul>
+  </div>
+<script>
+    document.getElementById('add-task-btn').addEventListener('click', addTask);
+
+function addTask() {
+  const taskInput = document.getElementById('task-input');
+  const taskText = taskInput.value.trim();
+  
+  if (!taskText) {
+    alert("Please enter a task!");
+    return;
+  }
+
+  const taskList = document.getElementById('task-list');
+  const listItem = document.createElement('li');
+  listItem.className = 'task-item';
+
+  const taskSpan = document.createElement('span');
+  taskSpan.textContent = taskText;
+  taskSpan.addEventListener('click', () => {
+    listItem.classList.toggle('completed');
+  });
+
+  const taskButtons = document.createElement('div');
+  taskButtons.className = 'task-buttons';
+
+  const editButton = document.createElement('button');
+  editButton.className = 'edit-btn';
+  editButton.innerHTML = '✏️';
+  editButton.addEventListener('click', () => editTask(taskSpan));
+
+  const deleteButton = document.createElement('button');
+  deleteButton.className = 'delete-btn';
+  deleteButton.innerHTML = '🗑️';
+  deleteButton.addEventListener('click', () => deleteTask(listItem));
+
+  taskButtons.appendChild(editButton);
+  taskButtons.appendChild(deleteButton);
+
+  listItem.appendChild(taskSpan);
+  listItem.appendChild(taskButtons);
+  taskList.appendChild(listItem);
+
+  taskInput.value = '';
+}
+
+function editTask(taskSpan) {
+  const newTask = prompt("Edit your task:", taskSpan.textContent);
+  if (newTask !== null) {
+    taskSpan.textContent = newTask.trim() || taskSpan.textContent;
+  }
+}
+
+function deleteTask(listItem) {
+  listItem.remove();
+}
+
+</script>
+</body>
+</html>
